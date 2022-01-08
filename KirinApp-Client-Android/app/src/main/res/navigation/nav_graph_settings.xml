@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/SettingsFragment">
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.minuminu.haruu.kirinapp.view.settings.SettingsFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_EvalFormGroupListFragment"
+            app:destination="@id/EvalFormGroupListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EvalFormGroupListFragment"
+        android:name="com.minuminu.haruu.kirinapp.view.evalformgrouplist.EvalFormGroupListFragment"
+        android:label="@string/setting_manage_eval_form_group"
+        tools:layout="@layout/fragment_eval_form_group_list">
+
+        <action
+            android:id="@+id/action_EvalFormGroupListFragment_to_EvalFormGroupDetailsFragment"
+            app:destination="@id/EvalFormGroupDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EvalFormGroupDetailsFragment"
+        android:name="com.minuminu.haruu.kirinapp.view.evalformgroupdetails.EvalFormGroupDetailsFragment"
+        android:label="@string/setting_manage_eval_form_group"
+        tools:layout="@layout/fragment_eval_form_group_details">
+
+        <argument
+            android:name="evalFormGroupId"
+            app:argType="long" />
+    </fragment>
+
+</navigation>

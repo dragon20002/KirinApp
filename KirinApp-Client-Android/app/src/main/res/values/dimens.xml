@@ -1,0 +1,18 @@
+<resources>
+    <dimen name="margin_wide">16dp</dimen>
+    <dimen name="margin_mid">8dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+
+    <dimen name="padding_wide">12dp</dimen>
+    <dimen name="padding_mid">8dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+
+    <dimen name="font_wide">24sp</dimen>
+    <dimen name="font_mid">16sp</dimen>
+    <dimen name="font_small">8sp</dimen>
+
+    <dimen name="icon_large">36dp</dimen>
+    <dimen name="icon_mid">24dp</dimen>
+    <dimen name="icon_small">18dp</dimen>
+
+</resources>

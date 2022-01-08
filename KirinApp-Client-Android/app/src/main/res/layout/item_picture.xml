@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.minuminu.haruu.kirinapp.view.homeinfodetails.HomeInfoDetailsViewModel" />
+
+        <import type="android.view.View" />
+
+        <import type="com.minuminu.haruu.kirinapp.db.data.PictureSize" />
+
+        <variable
+            name="picture"
+            type="com.minuminu.haruu.kirinapp.db.data.PictureViewData" />
+
+        <variable
+            name="viewModel"
+            type="com.minuminu.haruu.kirinapp.view.homeinfodetails.HomeInfoDetailsViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_mid"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_picture"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/picture"
+                android:scaleType="centerCrop"
+                app:deleted="@{picture.deleted}"
+                app:size="@{PictureSize.Small}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:pictureName="@{picture.name}" />
+
+            <Button
+                android:id="@+id/btn_remove"
+                style="@style/Widget.App.Button.TextButton.IconOnly"
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:padding="0dp"
+                android:visibility="@{viewModel.isEditing &amp;&amp; !picture.deleted ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_delete_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_restore"
+                style="@style/Widget.App.Button.TextButton.IconOnly"
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:padding="0dp"
+                android:visibility="@{viewModel.isEditing &amp;&amp; picture.deleted ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_undo_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_star_border"
+                style="@style/Widget.App.Button.TextButton.IconOnly"
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:padding="0dp"
+                android:visibility="@{viewModel.isEditing &amp;&amp; !viewModel.thumbnail.equals(picture.name) ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_star_border_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/btn_star"
+                style="@style/Widget.App.Button.TextButton.IconOnly"
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:enabled="@{viewModel.isEditing}"
+                android:padding="0dp"
+                android:visibility="@{viewModel.thumbnail.equals(picture.name) ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_star_24"
+                app:iconTint="@color/primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

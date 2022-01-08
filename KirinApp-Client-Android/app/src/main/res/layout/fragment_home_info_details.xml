@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.InputType" />
+
+        <import type="android.view.View" />
+
+        <import type="com.minuminu.haruu.kirinapp.db.data.HomeInfoDealType" />
+
+        <variable
+            name="viewModel"
+            type="com.minuminu.haruu.kirinapp.view.homeinfodetails.HomeInfoDetailsViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.homeinfodetails.HomeInfoDetailsFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- toolbar -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_go_to_list"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/go_to_list"
+                    android:textColor="@color/primary_dark"
+                    app:icon="@drawable/ic_arrow_back_24"
+                    app:iconTint="@color/primary_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/modify"
+                    android:textColor="@color/primary_dark"
+                    android:visibility='@{viewModel.isEditing ? View.GONE : View.VISIBLE}'
+                    app:icon="@drawable/ic_edit_24"
+                    app:iconTint="@color/primary_dark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:textColor="@color/primary_dark"
+                    android:visibility='@{viewModel.isEditing ? View.VISIBLE : View.GONE}'
+                    app:icon="@drawable/ic_clear_24"
+                    app:iconTint="@color/primary_dark"
+                    app:layout_constraintEnd_toStartOf="@id/btn_done"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_done"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/done"
+                    android:textColor="@color/primary_dark"
+                    android:visibility='@{viewModel.isEditing ? View.VISIBLE : View.GONE}'
+                    app:icon="@drawable/ic_done_24"
+                    app:iconTint="@color/primary_dark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- pictures -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                app:strokeColor="@color/gray_400"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_camera"
+                        style="@style/Widget.App.Button.TextButton.IconOnly"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin_small"
+                        android:backgroundTint="@color/primary_dark"
+                        android:clickable="@{viewModel.isEditing}"
+                        android:contentDescription="@string/add_picture"
+                        android:enabled="@{viewModel.isEditing}"
+                        android:visibility='@{viewModel.isEditing ? View.VISIBLE : View.GONE}'
+                        app:icon="@drawable/ic_add_a_photo_24"
+                        app:iconTint="@color/text_primary_dark" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_pictures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:layoutManager="LinearLayoutManager"
+                        app:pictures="@{viewModel.pictureList}"
+                        tools:listitem="@layout/item_picture" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:errorEnabled="true"
+                app:hintEnabled="true"
+                app:startIconContentDescription="@string/name"
+                app:startIconDrawable="@drawable/ic_home_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/name"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
+                    android:maxLength="255"
+                    android:text="@={viewModel.name}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- address -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:endIconContentDescription="@string/see_map"
+                app:endIconDrawable="@drawable/ic_location_searching_24"
+                app:endIconMode="custom"
+                app:errorEnabled="true"
+                app:hintEnabled="true"
+                app:startIconContentDescription="@string/address"
+                app:startIconDrawable="@drawable/ic_location_on_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/address"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
+                    android:maxLength="255"
+                    android:text="@={viewModel.address}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_area"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:errorEnabled="false"
+                app:hintEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/area"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL : InputType.TYPE_NULL}"
+                    android:maxLength="8"
+                    android:text="@={viewModel.area}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_floor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:errorEnabled="false"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_stairs_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_floor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/floor"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_NUMBER : InputType.TYPE_NULL}"
+                    android:maxLength="8"
+                    android:text="@={viewModel.floor}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- realtorTelNo -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_realtor_tel_no"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:errorEnabled="true"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_smartphone_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_realtor_tel_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/realtor_tel_no"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_PHONE : InputType.TYPE_NULL}"
+                    android:maxLength="255"
+                    android:text="@={viewModel.realtorTelNo}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ownerTelNo -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_owner_tel_no"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:counterEnabled="true"
+                app:counterMaxLength="255"
+                app:errorEnabled="true"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_smartphone_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_owner_tel_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/owner_tel_no"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_PHONE : InputType.TYPE_NULL}"
+                    android:maxLength="255"
+                    android:text="@={viewModel.ownerTelNo}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- dealType -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_deal_type"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <AutoCompleteTextView
+                    android:id="@+id/at_deal_type_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="255"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/deal_type"
+                    android:inputType="none"
+                    android:maxLength="255" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 보증금 / 월세 -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_deposit"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:errorEnabled="false"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_won">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_deposit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/deposit"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_NUMBER : InputType.TYPE_NULL}"
+                    android:maxLength="8"
+                    android:text="@={viewModel.deposit}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_rental"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                android:visibility="@{viewModel.dealTypeDescription.contentEquals(HomeInfoDealType.Monthly.description) ? View.VISIBLE : View.GONE}"
+                app:errorEnabled="false"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_won">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_rental"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/rental"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_NUMBER : InputType.TYPE_NULL}"
+                    android:maxLength="8"
+                    android:text="@={viewModel.rental}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_expense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_mid"
+                android:enabled="@{viewModel.isEditing}"
+                app:errorEnabled="false"
+                app:hintEnabled="true"
+                app:startIconDrawable="@drawable/ic_won">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="8"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/expense"
+                    android:inputType="@{viewModel.isEditing ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL : InputType.TYPE_NULL}"
+                    android:maxLength="8"
+                    android:text="@={viewModel.expense}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 계약가능 기간 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_wide"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_start_date"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_mid"
+                    android:layout_weight="1"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/start_date"
+                    android:padding="@dimen/padding_wide"
+                    android:text="@={viewModel.startDate}"
+                    android:textSize="@dimen/font_mid"
+                    app:icon="@drawable/ic_calendar_today_24" />
+
+                <Button
+                    android:id="@+id/btn_end_date"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_mid"
+                    android:layout_weight="1"
+                    android:enabled="@{viewModel.isEditing}"
+                    android:hint="@string/end_date"
+                    android:padding="@dimen/padding_wide"
+                    android:text="@={viewModel.endDate}"
+                    android:textSize="@dimen/font_mid"
+                    app:icon="@drawable/ic_calendar_today_24" />
+            </LinearLayout>
+
+            <!-- Q&A Form -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eval_info_category"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="@string/category"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceListItemSmall"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="@string/number"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceListItemSmall"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:layout_weight="1"
+                    android:text="@string/eval_content"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceListItemSmall"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="@string/eval_result"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceListItemSmall"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="@string/remark"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceListItemSmall"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eval_info_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                app:evalInfos="@{viewModel.evalInfoList}"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_eval_info" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

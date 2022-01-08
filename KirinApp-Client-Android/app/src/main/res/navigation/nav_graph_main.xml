@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeInfoListFragment">
+
+    <fragment
+        android:id="@+id/HomeInfoListFragment"
+        android:name="com.minuminu.haruu.kirinapp.view.homeinfolist.HomeInfoListFragment"
+        android:label="@string/item_fragment_label"
+        tools:layout="@layout/fragment_home_info_list">
+
+        <action
+            android:id="@+id/action_HomeInfoListFragment_to_HomeInfoDetailsFragment"
+            app:destination="@id/HomeInfoDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HomeInfoDetailsFragment"
+        android:name="com.minuminu.haruu.kirinapp.view.homeinfodetails.HomeInfoDetailsFragment"
+        android:label="@string/item_details_fragment_label"
+        tools:layout="@layout/fragment_home_info_details">
+
+        <argument
+            android:name="homeInfoId"
+            app:argType="long" />
+    </fragment>
+</navigation>

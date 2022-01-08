@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.text.InputType" />
+
+        <import type="android.view.View" />
+
+        <import type="com.minuminu.haruu.kirinapp.db.data.EvalInfoMethod" />
+
+        <variable
+            name="evalInfo"
+            type="com.minuminu.haruu.kirinapp.db.data.EvalInfoViewData" />
+
+        <variable
+            name="viewModel"
+            type="com.minuminu.haruu.kirinapp.view.homeinfodetails.HomeInfoDetailsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/eval_info_num"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:gravity="center"
+            android:text="@={evalInfo.num}"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+
+        <TextView
+            android:id="@+id/eval_info_category"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:gravity="center"
+            android:text="@={evalInfo.category}"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+
+        <TextView
+            android:id="@+id/eval_info_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_weight="1"
+            android:text="@={evalInfo.content}"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.minuminu.haruu.kirinapp.view.homeinfodetails.components.EditTextWithButton
+                android:id="@+id/et_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="4"
+                android:enabled="@{viewModel.isEditing}"
+                android:inputType="number|numberSigned"
+                android:maxEms="4"
+                android:maxLength="4"
+                android:text="@={evalInfo.result}"
+                android:textAlignment="center"
+                android:visibility='@{evalInfo.method.contentEquals(EvalInfoMethod.Int.name()) ? View.VISIBLE : View.GONE}' />
+
+            <CheckBox
+                android:id="@+id/cbx_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={evalInfo.blnResult}"
+                android:enabled="@{viewModel.isEditing}"
+                android:text='@{evalInfo.blnResult == true ? "예" : "아니오"}'
+                android:textAlignment="center"
+                android:visibility='@{evalInfo.method.contentEquals(EvalInfoMethod.Boolean.name()) ? View.VISIBLE : View.GONE}' />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_remark"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_small"
+            android:text="@string/ellipsis"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@string/cr"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@={evalInfo.remark}"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</layout>
