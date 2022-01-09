@@ -1,0 +1,1 @@
+https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.6.2&packaging=jar&jvmVersion=1.8&groupId=com.minuminu.haruu&artifactId=kirinapp&name=kirinapp&description=KirinApp%20Server&packageName=com.minuminu.haruu.kirinapp&dependencies=devtools,lombok,web,security,oauth2-client,jdbc,data-jpa,data-jdbc,mariadb
